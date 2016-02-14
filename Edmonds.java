@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Edmonds {
@@ -22,9 +23,11 @@ public class Edmonds {
 			minval=Math.min(minval,t.getMinEps());
 		}
 		System.out.println(minval);
+		ArrayList<Problem> probs=new ArrayList<>();
 		for (HungarianTree t:trees){
-			
+			probs.addAll(t.getProblems());
 		}
+		System.out.println(probs.toString());
 	}
 
 }

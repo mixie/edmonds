@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collection;
+
 
 public class HungarianTree extends Tree{
 	TreeNode root;
@@ -14,6 +17,10 @@ public class HungarianTree extends Tree{
 
 	public void updateEps(double minval) {
 		root.updateEps(minval);
+	}
+
+	public ArrayList<Problem> getProblems() {
+		return root.getProblems();
 	}
 	
 }

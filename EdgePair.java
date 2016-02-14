@@ -1,9 +1,10 @@
+
 public class EdgePair {
-	Flower f1;
-	Flower f2;
+	VertexFlower f1;
+	VertexFlower f2;
 	Edge es;
 
-	public EdgePair(Flower inside, Flower outside, Edge es) {
+	public EdgePair(VertexFlower inside, VertexFlower outside, Edge es) {
 		super();
 		this.f1 = inside;
 		this.f2 = outside;
@@ -12,8 +13,8 @@ public class EdgePair {
 	
 	double getMinForEdgePair() {
 		double val=0;
-		TNode tn1 = f1.parentTreeNode;
-		TNode tn2 = f2.parentTreeNode;
+		TNode tn1 = f1.getParentTreeNode();
+		TNode tn2 = f2.getParentTreeNode();
 		if ((tn1 instanceof CinkaNode) && (tn2 instanceof TreeNode)) {
 			TreeNode ttn2 = (TreeNode) tn2;
 			if (ttn2.evenLevel) {
@@ -37,11 +38,26 @@ public class EdgePair {
 		return val;
 	}
 	
-	boolean naplnilaSaHrana(){
+	Problem getProblem(){
 		if ((getMinForEdgePair()==0)&&(es.getState()==State.FREE)){
-			return true;
+			TNode tn1 = f1.getParentTreeNode();
+			TNode tn2 = f2.getParentTreeNode();
+			if((tn1 instanceof TreeNode)&&(tn2 instanceof TreeNode)){
+				TreeNode ttn2 = (TreeNode) tn2;
+				TreeNode ttn1 = (TreeNode) tn1;
+				if(ttn1.getRoot()==ttn2.getRoot()){
+					return new Problem(Problem.ProblemType.P3, this);
+				}else{
+					return new Problem(Problem.ProblemType.P4, this);
+				}
+			}
+			if(tn1 instanceof TreeNode){
+				return new Problem(this, f1, f2);
+			}else{
+				return new Problem(this, f2, f1);
+			}
 		}else{
-			return false;
+			return null;
 		}
 	}
 

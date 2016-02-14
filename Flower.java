@@ -8,12 +8,15 @@ public class Flower {
 	Flower parent; // ak nie je outerflower, pamata si nadkvetinu
 	// realne hrany pre vertex
 	boolean isStonka; // pamata si o sebe, ci je stonka
-	Tree parentTree; // je kvetina sucastou stromu alebo cinky, odkaz nan
-	TNode parentTreeNode;
+	private TNode parentTreeNode; //
 	EdgeFlower Medge; // hrana a kvetina cez parovaciu hranu
 	VertexFlower Mvertex; // vrchol, cez ktory sa paruje
 	EdgeFlower Ledge; // hrana a kvetina cez L hranu
 	VertexFlower Lvertex; // vrchol, z ktoreho ide L hrana
+
+	public void setParentTreeNode(TNode parentTreeNode) {
+		this.parentTreeNode = parentTreeNode;
+	}
 
 	ArrayList<VertexFlower> getVerticesOfFlower() {
 		ArrayList<VertexFlower> vertices = new ArrayList<>();
@@ -54,7 +57,7 @@ public class Flower {
 																	// vrcholov
 		double min = 999999999;
 		for (EdgePair ep : outerEdgePairs) {
-			min=Math.min(min,ep.getMinForEdgePair());
+			min = Math.min(min, ep.getMinForEdgePair());
 		}
 		return min;
 	}
@@ -88,6 +91,26 @@ public class Flower {
 
 	public void increaseCharge(double charge) {
 		this.charge += charge;
+	}
+
+	public ArrayList<Problem> getProblems() {
+		ArrayList<Problem> probs = new ArrayList<Problem>();
+		ArrayList<EdgePair> eps = getOuterEdgePairs();
+		for (EdgePair ep : eps) {
+			Problem p = ep.getProblem();
+			if (p != null) {
+				probs.add(p);
+			}
+		}
+		return probs;
+	}
+
+	public TNode getParentTreeNode() {
+		if (isOuterFlower) {
+			return parentTreeNode;
+		} else {
+			return parent.getParentTreeNode();
+		}
 	}
 
 }

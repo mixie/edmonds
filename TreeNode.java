@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 
+
 public class TreeNode extends TNode{
 	EdgeNode parent;
 	ArrayList<EdgeNode> children;
@@ -21,7 +22,7 @@ public class TreeNode extends TNode{
 			evenLevel=!parent.node.evenLevel;
 		}
 		this.node = node;
-		node.parentTreeNode=this;
+		node.setParentTreeNode(this);
 		children=new ArrayList<>();
 	}
 	
@@ -37,7 +38,11 @@ public class TreeNode extends TNode{
 			}
 			min= minval;
 		}else{
-			min= node.getCharge();
+			if(node instanceof VertexFlower){
+				min = 999999999;
+			}else{
+				min = node.getCharge();
+			}
 		}
 		for (EdgeNode child:children){
 			min=Math.min(min, child.node.getMinEps());
@@ -50,6 +55,26 @@ public class TreeNode extends TNode{
 			node.increaseCharge(minval);
 		}else{
 			node.increaseCharge(-minval);
+		}
+	}
+
+	public ArrayList<Problem> getProblems() {
+		ArrayList<Problem> a=new ArrayList<Problem>();
+		if(evenLevel){
+			a.addAll(node.getProblems());
+		}else{
+			if (node.getCharge()==0){
+				a.add(new Problem(node));
+			}
+		}
+		return a;
+	}
+	
+	public TreeNode getRoot(){
+		if(parent==null){
+			return this;
+		}else{
+			return parent.node.getRoot();
 		}
 	}
 }

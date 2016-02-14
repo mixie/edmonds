@@ -16,7 +16,6 @@ public class VertexFlower extends Flower {
 		isOuterFlower = true;
 		this.id = id;
 		edges = new ArrayList<>();
-		parentTree = null;
 	}
 	
 
