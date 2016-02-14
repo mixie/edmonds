@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class VertexFlower extends Flower {
 	int id;
-	ArrayList<EdgeFlower> edges; 
+	ArrayList<EdgeVertex> edges; 
 	
 	
 	ArrayList<VertexFlower> getVerticesOfFlower() {
@@ -12,19 +12,37 @@ public class VertexFlower extends Flower {
 	}
 	
 	public VertexFlower(int id) {
-		isStonka = true;
-		isOuterFlower = true;
+		stonka = this;
+		parent = null;
 		this.id = id;
 		edges = new ArrayList<>();
 	}
 	
 
 	void addEdge(VertexFlower f, Edge es) {
-		edges.add(new EdgeFlower(f, es));
+		edges.add(new EdgeVertex(f, es));
 	}
 
 	
 	public String toString(){
-		return Integer.toString(id);
+		return Integer.toString(id)+"C"+this.getCharge()+"C";
+	}
+	
+	public Flower getFlowerOnLevelForVertex(int level){ //vrati kvetinu na leveli, kde 0 je vonkajsia, 1 kvety vo vonk...
+		ArrayList<Flower> parentFlowers=new ArrayList<Flower>();
+		parentFlowers.add(this);
+		if(this.parent!=null){
+			parentFlowers.addAll(this.parent.getFlowerOnLevelForVertex());
+		}
+		return parentFlowers.get(parentFlowers.size()-level-1);
+	}
+	
+	public ArrayList<Edge> getAlternatingRouteForFlower(Edge from, Edge to){
+		return new ArrayList<>();
+	}
+	
+	public ArrayList<Edge> getAlternatingRouteForFlower(VertexFlower from,
+			VertexFlower to) {
+		return new ArrayList<>();
 	}
 }

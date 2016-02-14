@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.util.Collection;
 
-
-public class HungarianTree extends Tree{
+public class HungarianTree extends Tree {
 	TreeNode root;
 
 	public HungarianTree(TreeNode root) {
@@ -10,8 +8,8 @@ public class HungarianTree extends Tree{
 		this.root = root;
 		root.setParentTree(this);
 	}
-	
-	public double getMinEps(){
+
+	public double getMinEps() {
 		return root.getMinEps();
 	}
 
@@ -23,4 +21,11 @@ public class HungarianTree extends Tree{
 		return root.getProblems();
 	}
 	
+	public ArrayList<Edge> getAlternatingPathFrom(VertexFlower f){
+		return getAlternatingPathFrom(f);
+	}
+	
+	public String toString(){
+		return "Tree "+root.toString();
+	}
 }

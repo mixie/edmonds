@@ -29,6 +29,17 @@ public class Edge {
 				- f2.getOuterChargeForVertex();
 	}
 	
+	public void reverseState() throws Exception{
+		if (state==State.M){
+			state=State.L;
+		}else if (state==State.L){
+			state=State.M;
+		}else{
+			throw new Exception("Free edge v alternujucej ceste");
+		}
+		
+	}
+	
 }
 
 enum State {
