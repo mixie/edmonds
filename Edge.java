@@ -2,11 +2,11 @@
 public class Edge {
 	int edgeVal;
 	Graph g;
-	final Flower f1, f2;
+	final VertexFlower f1, f2;
 	
 	private State state;
 	
-	public Edge(int edgeVal, State state,Graph g,Flower f1,Flower f2) {
+	public Edge(int edgeVal, State state,Graph g,VertexFlower f1,VertexFlower f2) {
 		super();
 		this.edgeVal = edgeVal;
 		this.state = state; 
@@ -17,18 +17,6 @@ public class Edge {
 	
 	public void setState(State state) {
 		
-		if (this.state==State.L){
-			g.lEdges.remove(this);
-		}
-		if(this.state==State.M){
-			g.mEdges.remove(this);
-		}
-		if(state==State.M){
-			g.mEdges.add(this);
-		}
-		if(state==State.L){
-			g.lEdges.add(this);
-		}
 		this.state = state;
 	}
 	
@@ -36,7 +24,7 @@ public class Edge {
 		return state;
 	}
 	
-	int getMinForEdge() {
+	double getMinForEdge() {
 		return edgeVal - f1.getOuterChargeForVertex()
 				- f2.getOuterChargeForVertex();
 	}

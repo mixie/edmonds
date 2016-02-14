@@ -2,6 +2,10 @@ abstract class Tree {
 
 }
 
+abstract class TNode{
+	
+}
+
 public class Cinka extends Tree{
 	Flower f1,f2;
 	Edge es;

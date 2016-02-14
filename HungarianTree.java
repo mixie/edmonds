@@ -8,8 +8,12 @@ public class HungarianTree extends Tree{
 		root.setParentTree(this);
 	}
 	
-	public Edge getMinOuterEdge(){
-		return root.getMinOuterEdge();
+	public double getMinEps(){
+		return root.getMinEps();
+	}
+
+	public void updateEps(double minval) {
+		root.updateEps(minval);
 	}
 	
 }

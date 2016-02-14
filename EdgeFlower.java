@@ -1,10 +1,10 @@
 
 
 public class EdgeFlower {
-	Flower f;
+	VertexFlower f;
 	Edge es;
 	
-	public EdgeFlower(Flower f, Edge es) {
+	public EdgeFlower(VertexFlower f, Edge es) {
 		super();
 		this.f = f;
 		this.es=es;
