@@ -26,7 +26,6 @@ public class Edmonds {
 			if (((p.p == Problem.ProblemType.P2) || (p.p == Problem.ProblemType.P4))
 					|| (p.p == Problem.ProblemType.P3)) {
 				if (p.p == Problem.ProblemType.P2) {
-					System.out.println(p.fInCinka.getParentTreeNode());
 				}
 				p.fix(trees, cinky);
 				
@@ -34,7 +33,13 @@ public class Edmonds {
 				break;
 			}
 		}
-		System.out.println(g.sumOfMs);
+		int sum=0;
+		for(Edge e:g.allEdges){
+			if(e.getState()==State.M){
+				sum+=e.edgeVal;	
+			}
+		}
+		System.out.println(sum);
 		for(Edge e:g.allEdges){
 			if(e.getState()==State.M){
 				System.out.println(e.f1.id+" "+e.f2.id);

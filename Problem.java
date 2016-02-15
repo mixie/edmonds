@@ -31,7 +31,16 @@ public class Problem {
 	}
 
 	public String toString() {
-		return p.toString();
+		String s="";
+		if (p == ProblemType.P1){
+			s=p.toString()+" "+f.toString();
+		}else if (p ==ProblemType.P2){
+			s=p.toString()+" "+fInCinka+" "+fInTree;
+		}else{
+			s=p.toString()+" "+ep.f1+" "+ep.f2;
+		}
+		
+		return s;
 	}
 
 	public void fix(ArrayList<HungarianTree> trees, ArrayList<Cinka> cinky)
@@ -54,8 +63,7 @@ public class Problem {
 			cinky.addAll(cinkaNode1.vyrobCinky(true, new ArrayList<TreeNode>()));
 			TreeNode cinkaNode2 = (TreeNode) spodnaCinka2.getParentTreeNode();
 			cinky.addAll(cinkaNode2.vyrobCinky(true, new ArrayList<TreeNode>()));
-			System.out.println(spodnaCinka1.toString()
-					+ spodnaCinka2.toString());
+	
 			cinky.add(new Cinka(new CinkaNode(spodnaCinka1), new CinkaNode(
 					spodnaCinka2), ep.es));
 		}
@@ -189,6 +197,18 @@ public class Problem {
 				Cinka c=new Cinka(new CinkaNode(f1), new CinkaNode(f2), eM1);
 				cinky.add(c);
 			}
+			ArrayList<TreeNode> newNodes=new ArrayList<TreeNode>();
+			for(Flower f:odd){
+				if(f==bigUp){
+					newNodes.add(new TreeNode(((TreeNode)(this.f.getParentTreeNode())).parent, f, ((TreeNode)(this.f.getParentTreeNode())).edgeToParent));
+				}else{
+					newNodes.add(new TreeNode(newNodes.get(newNodes.size()-1), f, f.getEdgeToFlower(newNodes.get(newNodes.size()-1).node).es));
+				}
+			}
+			newNodes.get(newNodes.size()-1).addChild(tn.getChildren().get(0));
+			tn.getChildren().get(0).parent=newNodes.get(newNodes.size()-1);
+			tn.parent.removeChild(tn);
+			
 		}
 	}
 

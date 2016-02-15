@@ -14,6 +14,22 @@ public class Flower {
 		charge=0;
 	}
 	
+	public EdgeFlower getEdgeToFlower(Flower f){
+		if(edge1.f==f){
+			return edge1;
+		}else{
+			return edge2;
+		}
+	}
+	
+	public EdgeFlower getEdgeNotToFlower(Flower f){
+		if(edge1.f==f){
+			return edge2;
+		}else{
+			return edge1;
+		}
+	}
+	
 	public void setParentTreeNode(TNode parentTreeNode) {
 		this.parentTreeNode = parentTreeNode;
 	}

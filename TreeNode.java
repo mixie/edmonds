@@ -44,6 +44,11 @@ public class TreeNode extends TNode {
 	public void addChild(TreeNode child){
 		children.add(child);
 	}
+	
+	public void removeChild(TreeNode child){
+		children.remove(child);
+		child.parent=null;
+	}
 
 	double getMinEps() {
 		double min;
@@ -66,7 +71,6 @@ public class TreeNode extends TNode {
 		for (TreeNode child : children) {
 			min = Math.min(min, child.getMinEps());
 		}
-		System.out.println("eps " + node + " " + min);
 		return min;
 	}
 
@@ -124,17 +128,14 @@ public class TreeNode extends TNode {
 	public ArrayList<Cinka> vyrobCinky(boolean napojenaNaDruhyStrom,
 			ArrayList<TreeNode> routeUp) {
 		ArrayList<Cinka> c = new ArrayList<>();
-		System.out.println("this" + this);
 		for (TreeNode child : children) {
 			if (!routeUp.contains(child)) { // tie co nie su na ceste hore,
 											// rovno z nich tvorim cinky
 				child.edgeToParent.setState(State.FREE);
-				System.out.println(child.toString());
 				Flower f2 = child.children.get(0).node;
 				c.add(new Cinka(new CinkaNode(child.node), new CinkaNode(f2),
 						child.children.get(0).edgeToParent));
 			}
-
 		}
 		if (!napojenaNaDruhyStrom) {
 			TreeNode up2 = this.parent.parent;
@@ -161,7 +162,6 @@ public class TreeNode extends TNode {
 			}
 		} else {
 			if (parent != null) {
-				System.out.println("ajksljsljls");
 				routeUp.add(this);
 				this.edgeToParent.setState(State.FREE);
 				c.addAll(parent.vyrobCinky(false, routeUp));
