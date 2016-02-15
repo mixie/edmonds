@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TreeNode extends TNode {
 	TreeNode parent;
 	Edge edgeToParent;
-	ArrayList<TreeNode> children;
+	private ArrayList<TreeNode> children;
 	Flower node;
 	HungarianTree parentTree;
 	boolean evenLevel;
@@ -25,6 +26,23 @@ public class TreeNode extends TNode {
 		node.setParentTreeNode(this);
 		children = new ArrayList<>();
 		this.edgeToParent = edgeToParent;
+	}
+	
+	
+
+	public ArrayList<TreeNode> getChildren() {
+		return children;
+	}
+
+	public void setChildren(ArrayList<TreeNode> children) {
+		this.children = children;
+		for(TreeNode child:children){
+			child.parent=this;
+		}
+	}
+	
+	public void addChild(TreeNode child){
+		children.add(child);
 	}
 
 	double getMinEps() {
@@ -48,7 +66,7 @@ public class TreeNode extends TNode {
 		for (TreeNode child : children) {
 			min = Math.min(min, child.getMinEps());
 		}
-		System.out.println("eps "+node+" "+min);
+		System.out.println("eps " + node + " " + min);
 		return min;
 	}
 
@@ -58,7 +76,7 @@ public class TreeNode extends TNode {
 		} else {
 			node.increaseCharge(-minval);
 		}
-		for(TreeNode child:children){
+		for (TreeNode child : children) {
 			child.updateEps(minval);
 		}
 	}
@@ -86,26 +104,25 @@ public class TreeNode extends TNode {
 	public ArrayList<Edge> getAlternatingPathFrom(VertexFlower f) {
 		ArrayList<Edge> edges = new ArrayList<>();
 		Flower outerFlower = f.getOuterFlower();
-		if (this.parent == null) {
-			edges.addAll(f.getAlternatingRouteForFlower(node.stonka, f));
-		} else {
-			if (edgeToParent.f1.getOuterFlower() == this.node) {
-				edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
-						edgeToParent.f2));
-			} else {
-				edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
-						edgeToParent.f1));
+			if(parent!=null){
+				if (edgeToParent.f1.getOuterFlower() == this.node) {
+					edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
+							edgeToParent.f2));
+				} else {
+					edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
+							edgeToParent.f1));
+				}
+			}else{
+				edges.addAll(outerFlower.getAlternatingRouteForFlower(f, outerFlower.stonka));
 			}
 			edges.add(edgeToParent);
-		}
 		return edges;
-
 	}
 
 	public ArrayList<Cinka> vyrobCinky(boolean napojenaNaDruhyStrom,
 			ArrayList<TreeNode> routeUp) {
 		ArrayList<Cinka> c = new ArrayList<>();
-		System.out.println("this"+this);
+		System.out.println("this" + this);
 		for (TreeNode child : children) {
 			if (!routeUp.contains(child)) { // tie co nie su na ceste hore,
 											// rovno z nich tvorim cinky
@@ -119,7 +136,7 @@ public class TreeNode extends TNode {
 		}
 		if (!napojenaNaDruhyStrom) {
 			TreeNode up2 = this.parent.parent;
-			if(up2.parent!=null){
+			if (up2.parent != null) {
 				up2.edgeToParent.setState(State.FREE);
 			}
 			TreeNode up1 = this.parent;
@@ -152,12 +169,71 @@ public class TreeNode extends TNode {
 	}
 
 	public String toString() {
-		String s = node.toString()+evenLevel;
-		s=s+"->";
+		String s = node.toString() + evenLevel;
+		s = s + "->";
 		for (TreeNode tn : children) {
 			s = s + "*" + tn.toString();
 		}
-		s=s+"<-";
+		s = s + "<-";
 		return s;
 	}
+
+	public ArrayList<TreeNode> getRouteToRoot() {
+		ArrayList<TreeNode> route = new ArrayList<>();
+		route.add(this);
+		if (parent != null) {
+			route.addAll(parent.getRouteToRoot());
+		}
+		return route;
+	}
+
+	public ArrayList<TreeNode> getChildrenOnWayToParentNode(TreeNode tnspol,
+			ArrayList<TreeNode> routeUp) {
+		ArrayList<TreeNode> childrenNodes = new ArrayList<>();
+		for (TreeNode tn : children) {
+			if (!routeUp.contains(tn)) {
+				childrenNodes.add(tn);
+			}
+		}
+		routeUp.add(this);
+		if (this != tnspol) {
+			childrenNodes.addAll(parent.getChildrenOnWayToParentNode(tnspol,
+					routeUp));
+		}
+		return childrenNodes;
+	}
+
+	public HashSet<Flower> setNeighborsInFlower(ArrayList<TreeNode> children2, // setne aj
+																	// stonku
+			TreeNode tnspol) {
+		HashSet<Flower> flowers=new HashSet<Flower>();
+		flowers.add(this.node);
+		if (this == tnspol) {
+			ArrayList<TreeNode> childrenFlowers = new ArrayList<>();
+			for (TreeNode child : children) {
+				if (!children2.contains(child)) {
+					childrenFlowers.add(child);
+				}
+			}
+			node.edge1 = new EdgeFlower(
+					childrenFlowers.get(0).node.getOuterFlower(),
+					childrenFlowers.get(0).edgeToParent);
+			node.edge2 = new EdgeFlower(
+					childrenFlowers.get(1).node.getOuterFlower(),
+					childrenFlowers.get(1).edgeToParent);
+		} else {
+			node.edge1 = new EdgeFlower(parent.node.getOuterFlower(),
+					edgeToParent);
+			for (TreeNode child : children) {
+				if (!children2.contains(child)) {
+					node.edge2 = new EdgeFlower(child.node.getOuterFlower(),
+							child.edgeToParent);
+				}
+			}
+			node.stonka = tnspol.node.stonka;
+			flowers.addAll(parent.setNeighborsInFlower(children2, tnspol));
+		}
+		return flowers;
+	}
+
 }

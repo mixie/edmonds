@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Flower {
-	ArrayList<EdgeFlower> innerFlowers;
+	ArrayList<Flower> innerFlowers;
 	VertexFlower stonka; // pamata si iba outerFlower
 	private double charge; // naboj momentalnej flower
 	Flower parent; // ak nie je outerflower, pamata si nadkvetinu
@@ -10,14 +10,17 @@ public class Flower {
 	EdgeFlower edge1; // hrana a kvetina cez 1 z vystupnych hran z kvetiny
 	EdgeFlower edge2; // hrana a kvetina cez 1 z vystupnych hran z kvetiny
 
+	Flower(){
+		charge=0;
+	}
+	
 	public void setParentTreeNode(TNode parentTreeNode) {
 		this.parentTreeNode = parentTreeNode;
 	}
 
 	ArrayList<VertexFlower> getVerticesOfFlower() {
 		ArrayList<VertexFlower> vertices = new ArrayList<>();
-		for (EdgeFlower e : innerFlowers) {
-			Flower f = e.f;
+		for (Flower f : innerFlowers) {
 			vertices.addAll(f.getVerticesOfFlower());
 		}
 		return vertices;
@@ -74,8 +77,7 @@ public class Flower {
 
 	public String toString() {
 		String s = "";
-		for (EdgeFlower e : innerFlowers) {
-			Flower f = e.f;
+		for (Flower f : innerFlowers) {
 			s = f.toString() + " "+"C"+charge+"C";
 		}
 		return s;
@@ -109,26 +111,23 @@ public class Flower {
 		}
 	}
 
-	public ArrayList<Flower> getFlowerOnLevelForVertex() {
+	public ArrayList<Flower> getAllParentFlowersForVertex() {
 		ArrayList<Flower> f = new ArrayList<>();
 		f.add(this);
 		if (parent != null) {
-			f.addAll(parent.getFlowerOnLevelForVertex());
+			f.addAll(parent.getAllParentFlowersForVertex());
 		}
 		return f;
 	}
 
-	public int getLevelOfFlower(int i) {
+	public int getLevelOfFlower() {
+		int i=0;
 		if (parent == null) {
 			return i;
 		} else {
-			i++;
-			return parent.getLevelOfFlower(i);
+			 i=1+parent.getLevelOfFlower();
 		}
-	}
-
-	public int getLevelOfFlower() {
-		return getLevelOfFlower(0);
+		return i;
 	}
 
 	public ArrayList<Edge> reconstructPath(ArrayList<Flower> path) {
@@ -159,6 +158,9 @@ public class Flower {
 	public ArrayList<Edge> getAlternatingRouteForFlower(VertexFlower from,
 			VertexFlower to) {
 		if (from == to) {
+			return new ArrayList<Edge>();
+		}
+		if(this instanceof VertexFlower){
 			return new ArrayList<Edge>();
 		}
 		int vertexLevelFrom = from.getLevelOfFlower();

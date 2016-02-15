@@ -15,10 +15,10 @@ public class Edmonds {
 			for (HungarianTree t : trees) {
 				minval = Math.min(minval, t.getMinEps());
 			}
-			System.out.println("e"+minval);
 			for (HungarianTree t : trees) {
 				t.updateEps(minval);
 			}
+			System.out.println(minval);
 			for (HungarianTree t : trees) {
 				minval = Math.min(minval, t.getMinEps());
 			}
@@ -29,8 +29,8 @@ public class Edmonds {
 			}
 			System.out.println(probs.toString());
 			Problem p = probs.get(0);
-			if ((p.p == Problem.ProblemType.P2)
-					|| (p.p == Problem.ProblemType.P4)) {
+			if (((p.p == Problem.ProblemType.P2) || (p.p == Problem.ProblemType.P4))
+					|| (p.p == Problem.ProblemType.P3)) {
 				if (p.p == Problem.ProblemType.P2) {
 					System.out.println(p.fInCinka.getParentTreeNode());
 				}

@@ -32,7 +32,7 @@ public class VertexFlower extends Flower {
 		ArrayList<Flower> parentFlowers=new ArrayList<Flower>();
 		parentFlowers.add(this);
 		if(this.parent!=null){
-			parentFlowers.addAll(this.parent.getFlowerOnLevelForVertex());
+			parentFlowers.addAll(this.parent.getAllParentFlowersForVertex());
 		}
 		return parentFlowers.get(parentFlowers.size()-level-1);
 	}
@@ -41,8 +41,4 @@ public class VertexFlower extends Flower {
 		return new ArrayList<>();
 	}
 	
-	public ArrayList<Edge> getAlternatingRouteForFlower(VertexFlower from,
-			VertexFlower to) {
-		return new ArrayList<>();
-	}
 }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class Problem {
@@ -40,7 +41,7 @@ public class Problem {
 			System.out.println("p4 Spajame:"+tn1+tn2);
 			ArrayList<Edge> altpath=new ArrayList<>();
 			altpath.addAll(tn1.getAlternatingPathFrom(ep.f1));
-			altpath.addAll(tn1.getAlternatingPathFrom(ep.f2));
+			altpath.addAll(tn2.getAlternatingPathFrom(ep.f2));
 			for(Edge e:altpath){
 				e.reverseState();
 			}
@@ -72,6 +73,51 @@ public class Problem {
 			cinky.remove(c);
 		}
 		if(ProblemType.P3==p){
+			ep.es.setState(State.L);
+			TreeNode tn1=(TreeNode)ep.f1.getOuterFlower().getParentTreeNode();
+			TreeNode tn2=(TreeNode)ep.f2.getOuterFlower().getParentTreeNode();
+			ArrayList<TreeNode> r1=tn1.getRouteToRoot();
+			ArrayList<TreeNode> r2=tn2.getRouteToRoot();
+			ArrayList<TreeNode> spolRoute=new ArrayList<TreeNode>();
+			spolRoute.addAll(r1);spolRoute.addAll(r2);
+			TreeNode tnspol=null;
+			for(TreeNode t: r1){
+				if (r2.contains(t)){
+					tnspol=t;
+					break;
+				}
+			}
+			if(tn1==tnspol){
+				tn1.addChild(tn2);
+			}
+			if(tn2==tnspol){
+				tn2.addChild(tn1);
+			}
+			
+			ArrayList<TreeNode> children=tn1.getChildrenOnWayToParentNode(tnspol,spolRoute);
+			children.addAll(tn2.getChildrenOnWayToParentNode(tnspol,spolRoute));
+			HashSet<Flower> flowers=tn1.setNeighborsInFlower(children, tnspol);
+			flowers.addAll(tn2.setNeighborsInFlower(children, tnspol));
+			Flower outer=new Flower();
+			outer.edge1=null;
+			outer.edge2=null;
+			outer.innerFlowers=new ArrayList<>(flowers);
+			for(Flower f:flowers){
+				f.parent=outer;
+			}
+			outer.parent=null;
+			outer.stonka=tnspol.node.stonka;
+			TreeNode tnNew=new TreeNode(tnspol.parent, outer, tnspol.edgeToParent);
+			tnNew.setChildren(children);
+			tn1.node.edge2=new EdgeFlower(tn2.node, ep.es);
+			tn2.node.edge2=new EdgeFlower(tn1.node, ep.es);
+			System.out.println("************8");
+			System.out.println(tnspol.parentTree.root);
+			System.out.println(tnspol);
+			if (tnspol.parentTree.root==tnspol){
+				tnspol.parentTree.root=tnNew;
+				System.out.println("TNNEW"+tnNew.toString());
+			}
 			
 		}
 	}
