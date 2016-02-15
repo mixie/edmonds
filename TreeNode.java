@@ -107,15 +107,17 @@ public class TreeNode extends TNode {
 			if(parent!=null){
 				if (edgeToParent.f1.getOuterFlower() == this.node) {
 					edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
-							edgeToParent.f2));
+							edgeToParent.f1));
+					edges.addAll(parent.getAlternatingPathFrom(edgeToParent.f2));
 				} else {
 					edges.addAll(outerFlower.getAlternatingRouteForFlower(f,
-							edgeToParent.f1));
+							edgeToParent.f2));
+					edges.addAll(parent.getAlternatingPathFrom(edgeToParent.f1));
 				}
+				edges.add(edgeToParent);
 			}else{
 				edges.addAll(outerFlower.getAlternatingRouteForFlower(f, outerFlower.stonka));
 			}
-			edges.add(edgeToParent);
 		return edges;
 	}
 

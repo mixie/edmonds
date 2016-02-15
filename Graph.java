@@ -10,6 +10,8 @@ public class Graph {
 	boolean [][] hasEdges;
 	HashMap<Integer,VertexFlower> vertices;
 	ArrayList<Edge> allEdges=new ArrayList<>();
+	int numberOfMs=0;
+	int sumOfMs=0;
 	
 	void nacitaj(){
 	    Scanner sc = new Scanner(System.in);

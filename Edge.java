@@ -16,7 +16,14 @@ public class Edge {
 	}
 	
 	public void setState(State state) {
-		
+		if(this.state==State.M){
+			g.numberOfMs--;
+			g.sumOfMs-=edgeVal;
+		}
+		if(state==State.M){
+			g.numberOfMs++;
+			g.sumOfMs+=edgeVal;
+		}
 		this.state = state;
 	}
 	

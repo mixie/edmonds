@@ -173,20 +173,22 @@ public class Flower {
 		ArrayList<Flower> path = new ArrayList<>();
 		path.add(lowerFromFlower);
 		while (actFlower != lowerToFlower) {
-			actFlower = actFlower.edge1.f;
+			Flower oldActFlower=actFlower;
+			actFlower = oldActFlower.edge1.f;
 			if (path.contains(actFlower)) {
-				actFlower = actFlower.edge2.f;
+				actFlower = oldActFlower.edge2.f;
 			}
 			path.add(actFlower);
 			pathlen++;
 		}
-		path.clear();
-		if (pathlen % 2 != 0) {
+		if (pathlen % 2 == 0) {
+			path.clear();
 			path.add(lowerFromFlower);
-			while (actFlower != lowerToFlower) {
-				actFlower = actFlower.edge2.f;
+			while (actFlower != lowerToFlower){
+				Flower oldActFlower=actFlower;
+				actFlower = oldActFlower.edge2.f;
 				if (path.contains(actFlower)) {
-					actFlower = actFlower.edge1.f;
+					actFlower = oldActFlower.edge1.f;
 				}
 				path.add(actFlower);
 				pathlen++;
@@ -198,15 +200,15 @@ public class Flower {
 		for (Flower f : path) {
 			if (f == lowerFromFlower) {
 				edgepath.addAll(getAlternatingRouteForFlower(from,
-						f.getInnerVertexOfFlowerFromEdge(edgepath.get(0))));
+						f.getInnerVertexOfFlowerFromEdge(edgePathBetweenFlowers.get(0))));
 			} else if (f == lowerToFlower) {
 				edgepath.addAll(getAlternatingRouteForFlower(f
-						.getInnerVertexOfFlowerFromEdge(edgepath.get(edgepath
+						.getInnerVertexOfFlowerFromEdge(edgePathBetweenFlowers.get(edgePathBetweenFlowers
 								.size() - 1)), to));
 			} else {
 				edgepath.addAll(getAlternatingRouteForFlower(
-						f.getInnerVertexOfFlowerFromEdge(edgepath.get(i)),
-						f.getInnerVertexOfFlowerFromEdge(edgepath.get(i + 1))));
+						f.getInnerVertexOfFlowerFromEdge(edgePathBetweenFlowers.get(i-1)),
+						f.getInnerVertexOfFlowerFromEdge(edgePathBetweenFlowers.get(i))));
 			}
 			if (i != edgePathBetweenFlowers.size()) {
 				edgepath.add(edgePathBetweenFlowers.get(i));
