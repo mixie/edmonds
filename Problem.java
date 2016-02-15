@@ -37,7 +37,7 @@ public class Problem {
 			trees.remove(tn1.parentTree);
 			TreeNode tn2= (TreeNode)ep.f2.getParentTreeNode();
 			trees.remove(tn2.parentTree);
-			System.out.println("Spajame:"+tn1+tn2);
+			System.out.println("p4 Spajame:"+tn1+tn2);
 			ArrayList<Edge> altpath=new ArrayList<>();
 			altpath.addAll(tn1.getAlternatingPathFrom(ep.f1));
 			altpath.addAll(tn1.getAlternatingPathFrom(ep.f2));
@@ -55,6 +55,7 @@ public class Problem {
 			cinky.add(new Cinka(new CinkaNode(spodnaCinka1),new CinkaNode(spodnaCinka2),ep.es));
 		}
 		if(ProblemType.P2==p){
+			System.out.println("p2 Spajame:"+fInTree+fInCinka);
 			ep.es.setState(State.L);
 			TreeNode tn=(TreeNode)fInTree.getParentTreeNode();
 			System.out.println("Here:"+fInCinka.getParentTreeNode());
@@ -69,6 +70,9 @@ public class Problem {
 			TreeNode fromCinka1 = new TreeNode(tn, fInCinka.getOuterFlower(), ep.es);
 			TreeNode fromCinka2 = new TreeNode(fromCinka1,cn2.getF().getOuterFlower(),c.es);
 			cinky.remove(c);
+		}
+		if(ProblemType.P3==p){
+			
 		}
 	}
 	

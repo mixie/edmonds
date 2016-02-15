@@ -48,6 +48,7 @@ public class TreeNode extends TNode {
 		for (TreeNode child : children) {
 			min = Math.min(min, child.getMinEps());
 		}
+		System.out.println("eps "+node+" "+min);
 		return min;
 	}
 
@@ -56,6 +57,9 @@ public class TreeNode extends TNode {
 			node.increaseCharge(minval);
 		} else {
 			node.increaseCharge(-minval);
+		}
+		for(TreeNode child:children){
+			child.updateEps(minval);
 		}
 	}
 
